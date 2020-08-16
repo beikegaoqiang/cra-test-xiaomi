@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小米有品webapp</title>
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+  </head>
+
+  <body>
+    <!-- 根据设备宽度计算rem标准值 -->
+    <script>
+      (function() {
+        let evt =
+          "onorientationchange" in window ? "orientationchange" : "resize";
+        // 移动端横竖屏检测的三种方案：
+        // 1. orientationchange事件：当设备旋转，横屏/竖屏模式切换时会触发。苹果为safari添加的。结合orientationChange事件和window.orientation属性（0为竖屏模式，-90表示设备横向旋转到右侧的横屏模式，90表示设备是横向旋转到左边的横屏模式），能判断设备是处于横屏还是竖屏了。（有些设备并没有提供orientationchange事件，就要用resize窗口事件）
+        // 2. 纯CSS：借助 media queries
+        // 3. resize事件：窗口发生变化的时候触发。用 window.innerWidth、window.innerHeight 可以检索得到屏幕大小。依据宽和高的大小比较判断是竖屏/横屏。
+
+        function computed() {
+          let HTML = document.documentElement,
+            deviceW = HTML.clientWidth, // 当前设备宽度
+            designW = 750, // 设计稿宽度
+            ratio = (deviceW / designW) * 100; // 当前设备的缩放比再乘以100，是为了
+          if (deviceW >= designW) ratio = 100; // 如果设备宽度大于设计稿宽度，就直接取100，避免适配过大窗口展示过大的页面
+          HTML.style.fontSize = ratio + "px"; // 1rem对应的px像素
+        }
+        computed();
+        window.addEventListener(evt, computed); // 注册监听事件函数
+      })();
+    </script>
+
+    <div id="root"></div>
+
+    <!-- 引入utils.js工具脚本 -->
+    <script src="%PUBLIC_URL%/utils.js"></script>
+  </body>
+</html>
